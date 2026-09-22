@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenDuck-mini · 项目制作展示</title>
+<style>
+  :root{
+    --bg:#FAF7F2; --surface:#FFFFFF; --ink:#221B10; --muted:#8B7F6E;
+    --accent:#F5A800; --accent-deep:#C98A00; --accent-ink:#3A2C00;
+    --border:#ECE4D6; --radius:16px; --shadow:0 6px 24px rgba(60,45,10,.08);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    line-height:1.7; -webkit-font-smoothing:antialiased;
+  }
+  img{display:block;max-width:100%}
+
+  /* ---------- 顶部导航 ---------- */
+  nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(250,247,242,.85);backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav-inner{
+    max-width:1080px;margin:0 auto;padding:14px 24px;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+  }
+  .logo{font-weight:800;font-size:17px;letter-spacing:.5px;display:flex;align-items:center;gap:8px}
+  .logo .duck{font-size:22px}
+  .nav-links{display:flex;gap:4px;flex-wrap:wrap}
+  .nav-links a{
+    text-decoration:none;color:var(--muted);font-size:14px;font-weight:600;
+    padding:6px 14px;border-radius:99px;transition:all .2s;
+  }
+  .nav-links a:hover{color:var(--ink);background:var(--surface)}
+
+  /* ---------- Hero ---------- */
+  .hero{max-width:1080px;margin:0 auto;padding:64px 24px 40px;display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center}
+  .kicker{
+    display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;
+    color:var(--accent-deep);background:#FDEFC8;border:1px solid #F3DDA0;
+    padding:6px 14px;border-radius:99px;margin-bottom:20px;
+  }
+  .hero h1{font-size:clamp(36px,5vw,54px);line-height:1.15;letter-spacing:-1px;font-weight:800}
+  .hero h1 .hl{color:var(--accent-deep)}
+  .hero p{margin-top:18px;font-size:17px;color:var(--muted);max-width:34em}
+  .stats{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}
+  .stat{
+    background:var(--surface);border:1px solid var(--border);border-radius:14px;
+    padding:14px 20px;min-width:110px;box-shadow:var(--shadow);
+  }
+  .stat b{display:block;font-size:24px;font-weight:800;letter-spacing:-.5px}
+  .stat span{font-size:12.5px;color:var(--muted)}
+  .hero-photo{
+    position:relative;border-radius:20px;overflow:hidden;box-shadow:0 20px 50px rgba(60,45,10,.18);
+    transform:rotate(1.5deg);border:6px solid #fff;
+  }
+  .hero-photo img{width:100%;aspect-ratio:4/4.6;object-fit:cover}
+  .hero-photo .tag{
+    position:absolute;left:12px;bottom:12px;background:rgba(20,15,5,.72);color:#fff;
+    font-size:12px;font-weight:600;padding:5px 12px;border-radius:99px;backdrop-filter:blur(4px);
+  }
+
+  /* ---------- 区块通用 ---------- */
+  section{max-width:1080px;margin:0 auto;padding:56px 24px}
+  .sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:8px}
+  .sec-num{font-size:13px;font-weight:800;color:var(--accent);letter-spacing:2px}
+  .sec-head h2{font-size:clamp(24px,3vw,32px);font-weight:800;letter-spacing:-.5px}
+  .sec-desc{color:var(--muted);font-size:15.5px;margin-bottom:28px;max-width:44em}
+
+  /* ---------- 照片墙 ---------- */
+  .masonry{columns:3;column-gap:16px}
+  @media(max-width:900px){.masonry{columns:2}}
+  @media(max-width:560px){.masonry{columns:1}}
+  .ph{
+    position:relative;break-inside:avoid;margin-bottom:16px;border-radius:var(--radius);
+    overflow:hidden;cursor:zoom-in;background:var(--surface);box-shadow:var(--shadow);
+    border:1px solid var(--border);
+  }
+  .ph img{width:100%;transition:transform .35s ease}
+  .ph:hover img{transform:scale(1.03)}
+  .ph .date{
+    position:absolute;top:10px;left:10px;background:rgba(20,15,5,.72);color:#FFD97A;
+    font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:99px;letter-spacing:.5px;
+    backdrop-filter:blur(4px);
+  }
+
+  /* ---------- 装配时间线 ---------- */
+  .tl{position:relative;padding-left:26px}
+  .tl::before{content:"";position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:linear-gradient(var(--accent),#EADFCB)}
+  .tl-group{position:relative;margin-bottom:34px}
+  .tl-group::before{
+    content:"";position:absolute;left:-25px;top:7px;width:12px;height:12px;border-radius:50%;
+    background:var(--accent);border:3px solid #fff;box-shadow:0 0 0 2px var(--accent);
+  }
+  .tl-date{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .tl-date b{font-size:15px;font-weight:800;background:var(--surface);border:1px solid var(--border);padding:2px 12px;border-radius:99px}
+  .tl-date span{font-size:13px;color:var(--muted)}
+  .tl-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+
+  /* ---------- 视频 ---------- */
+  .video-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  @media(max-width:760px){.video-grid{grid-template-columns:1fr}}
+  .vcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+  .vcard video{width:100%;aspect-ratio:9/13.5;object-fit:cover;background:#141414;display:block}
+  .vcard .vinfo{padding:14px 18px}
+  .vcard .vinfo b{font-size:15px}
+  .vcard .vinfo p{font-size:13px;color:var(--muted);margin-top:2px}
+
+  /* ---------- 页脚 ---------- */
+  footer{border-top:1px solid var(--border);margin-top:40px}
+  .foot-inner{max-width:1080px;margin:0 auto;padding:28px 24px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:13px}
+
+  /* ---------- 灯箱 ---------- */
+  .lightbox{
+    position:fixed;inset:0;z-index:100;background:rgba(15,12,6,.94);
+    display:none;align-items:center;justify-content:center;flex-direction:column;padding:24px;
+  }
+  .lightbox.open{display:flex}
+  .lb-img{max-width:min(92vw,1000px);max-height:78vh;border-radius:10px;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+  .lb-cap{color:#EDE0C4;margin-top:16px;font-size:14px;font-weight:600;letter-spacing:.5px}
+  .lb-btn{
+    position:absolute;top:50%;transform:translateY(-50%);
+    background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;
+    font-size:26px;width:52px;height:52px;border-radius:50%;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;transition:background .2s;user-select:none;
+  }
+  .lb-btn:hover{background:rgba(255,255,255,.28)}
+  .lb-prev{left:22px}.lb-next{right:22px}
+  .lb-close{
+    position:absolute;top:18px;right:22px;background:none;border:none;color:#fff;font-size:30px;
+    cursor:pointer;opacity:.8;line-height:1;
+  }
+  .lb-close:hover{opacity:1}
+  .lb-count{position:absolute;top:26px;left:26px;color:#CBBFA4;font-size:13px;font-weight:700;letter-spacing:1px}
+
+  @media(max-width:860px){
+    .hero{grid-template-columns:1fr;padding-top:40px}
+    .hero-photo{max-width:420px}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="logo"><span class="duck">🦆</span>OpenDuck-mini<span style="color:var(--accent)">.</span></div>
+    <div class="nav-links">
+      <a href="#bom">物料清点</a>
+      <a href="#assembly">装配过程</a>
+      <a href="#final">最终成果</a>
+      <a href="#video">视频演示</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div>
+    <span class="kicker">🎬 实拍项目记录 · 2025</span>
+    <h1>从一堆零件，<br>到一只<span class="hl">会走路的鸭子</span></h1>
+    <p>OpenDuck-mini 开源仿生小鸭子机器人的完整搭建记录：物料清点 → 结构装配 → 电路连接 → 调试行走，全程实拍，历时约一个月。</p>
+    <div class="stats">
+      <div class="stat"><b>36</b><span>张实拍照片</span></div>
+      <div class="stat"><b>2</b><span>段演示视频</span></div>
+      <div class="stat"><b>30</b><span>天制作周期</span></div>
+      <div class="stat"><b>04.13–05.12</b><span>起止时间</span></div>
+    </div>
+  </div>
+  <div class="hero-photo">
+    <img src="images/final/IMG_4090.jpg" alt="OpenDuck-mini 成品">
+    <span class="tag">最终成品 · 05-05</span>
+  </div>
+</header>
+
+<!-- 01 物料清点 -->
+<section id="bom">
+  <div class="sec-head"><span class="sec-num">01</span><h2>物料清点 · BOM</h2></div>
+  <p class="sec-desc">开工前对所有结构件与电子元件进行拆箱清点，核对 BOM 清单，确保零件齐全后再进入装配环节。</p>
+  <div class="masonry" id="grid-bom"></div>
+</section>
+
+<!-- 02 装配过程 -->
+<section id="assembly">
+  <div class="sec-head"><span class="sec-num">02</span><h2>装配过程</h2></div>
+  <p class="sec-desc">按拍摄时间排列的完整装配记录：从结构件组装、机械传动、电路焊接连接，到上电调试。</p>
+  <div class="tl" id="grid-assembly"></div>
+</section>
+
+<!-- 03 最终成果 -->
+<section id="final">
+  <div class="sec-head"><span class="sec-num">03</span><h2>最终成果</h2></div>
+  <p class="sec-desc">装配完成后的成品多角度实拍与调试记录。</p>
+  <div class="masonry" id="grid-final"></div>
+</section>
+
+<!-- 04 视频演示 -->
+<section id="video">
+  <div class="sec-head"><span class="sec-num">04</span><h2>视频演示</h2></div>
+  <p class="sec-desc">两段实拍视频：装配调试过程实录，以及成品运行演示。</p>
+  <div class="video-grid">
+    <div class="vcard">
+      <video controls playsinline preload="metadata" src="videos/assembly_test.mp4"></video>
+      <div class="vinfo"><b>装配与调试实录</b><p>拍摄于 05-05 · 装配过程</p></div>
+    </div>
+    <div class="vcard">
+      <video controls playsinline preload="metadata" src="videos/final_duck.mp4"></video>
+      <div class="vinfo"><b>成品运行演示</b><p>拍摄于 05-04 · 最终成果</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-inner">
+    <span>🦆 OpenDuck-mini 项目制作展示</span>
+    <span>照片与视频均为实拍 · 2025.04 – 2025.05</span>
+  </div>
+</footer>
+
+<!-- 灯箱 -->
+<div class="lightbox" id="lightbox">
+  <span class="lb-count" id="lb-count"></span>
+  <button class="lb-close" id="lb-close" aria-label="关闭">×</button>
+  <button class="lb-btn lb-prev" id="lb-prev" aria-label="上一张">‹</button>
+  <img class="lb-img" id="lb-img" alt="">
+  <div class="lb-cap" id="lb-cap"></div>
+  <button class="lb-btn lb-next" id="lb-next" aria-label="下一张">›</button>
+</div>
+
+<script>
+/* ============ 数据：想增删照片，改这里就行 ============
+   格式: ["文件名", "拍摄日期"] ，路径前缀为 images/<板块>/     */
+const DATA = {
+  bom: [
+    ["IMG_3915.jpg","04-13"],["IMG_3919.jpg","04-13"],["IMG_3920.jpg","04-13"],
+    ["IMG_3930.jpg","04-14"],["IMG_3931.jpg","04-14"],["IMG_3932.jpg","04-14"],
+    ["IMG_3933.jpg","04-14"],["IMG_3934.jpg","04-14"],["IMG_3935.jpg","04-14"],
+    ["IMG_3936.jpg","04-14"],["IMG_4015.jpg","04-24"],
+  ],
+  /* 装配过程按日期分组: [日期, 备注, [照片...]] */
+  assemblyGroups: [
+    ["04-14","开工 · 结构件装配",            ["IMG_3939.jpg"]],
+    ["04-15","机械结构组装",                 ["IMG_3944.jpg","IMG_3945.jpg","IMG_3946.jpg"]],
+    ["04-17","装配推进",                     ["IMG_3974.jpg","IMG_3975.jpg"]],
+    ["04-18","装配推进",                     ["IMG_3984.jpg"]],
+    ["04-19","装配推进",                     ["IMG_3991.jpg"]],
+    ["04-21","装配推进",                     ["IMG_3998.jpg","IMG_3999.jpg"]],
+    ["04-22","装配推进",                     ["IMG_4007.jpg"]],
+    ["04-23","装配推进",                     ["IMG_4008.jpg"]],
+    ["05-04","接近完成",                     ["IMG_4073.jpg"]],
+    ["05-05","调试",                         ["IMG_4087.jpg"]],
+    ["05-12","收尾完善",                     ["IMG_4084.jpg"]],
+  ],
+  final: [
+    ["IMG_3969.jpg","04-16"],["IMG_3985.jpg","04-18"],["IMG_3986.jpg","04-18"],
+    ["IMG_3987.jpg","04-18"],["IMG_3988.jpg","04-18"],["IMG_4016.jpg","04-24"],
+    ["IMG_4017.jpg","04-24"],["IMG_4082.jpg","05-05"],["IMG_4083.jpg","05-05"],
+    ["IMG_4090.jpg","05-05"],
+  ],
+};
+
+const SECTION_NAME = {bom:"物料清点", assembly:"装配过程", final:"最终成果"};
+const lb = document.getElementById("lightbox");
+const lbImg = document.getElementById("lb-img");
+const lbCap = document.getElementById("lb-cap");
+const lbCount = document.getElementById("lb-count");
+let lbList = [], lbIdx = 0;
+
+function ph(src, date, section){
+  const fig = document.createElement("figure");
+  fig.className = "ph";
+  fig.innerHTML = `<img src="images/${section}/${src}" loading="lazy" decoding="async" alt="${section} ${date}">` +
+                  `<span class="date">${date}</span>`;
+  fig.addEventListener("click", () => openLb(fig.querySelector("img").src, date, section));
+  return fig;
+}
+
+function openLb(src, date, section){
+  lbList = [...document.querySelectorAll(".ph img")].map(i => ({src:i.src, date:i.closest(".ph").querySelector(".date").textContent, section:i.closest("section").id}));
+  lbIdx = Math.max(0, lbList.findIndex(i => i.src === src));
+  showLb();
+  lb.classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+function showLb(){
+  const it = lbList[lbIdx];
+  lbImg.src = it.src;
+  lbCap.textContent = `${SECTION_NAME[it.section] || ""} · ${it.date}`;
+  lbCount.textContent = `${lbIdx+1} / ${lbList.length}`;
+}
+function closeLb(){ lb.classList.remove("open"); document.body.style.overflow = ""; }
+function stepLb(d){ lbIdx = (lbIdx + d + lbList.length) % lbList.length; showLb(); }
+
+document.getElementById("lb-close").addEventListener("click", closeLb);
+document.getElementById("lb-prev").addEventListener("click", () => stepLb(-1));
+document.getElementById("lb-next").addEventListener("click", () => stepLb(1));
+lb.addEventListener("click", e => { if(e.target === lb) closeLb(); });
+document.addEventListener("keydown", e => {
+  if(!lb.classList.contains("open")) return;
+  if(e.key === "Escape") closeLb();
+  if(e.key === "ArrowLeft") stepLb(-1);
+  if(e.key === "ArrowRight") stepLb(1);
+});
+
+/* 渲染 */
+const gridBom = document.getElementById("grid-bom");
+DATA.bom.forEach(([f, d]) => gridBom.appendChild(ph(f, d, "bom")));
+
+const gridAsm = document.getElementById("grid-assembly");
+DATA.assemblyGroups.forEach(([date, note, files]) => {
+  const g = document.createElement("div");
+  g.className = "tl-group";
+  g.innerHTML = `<div class="tl-date"><b>${date}</b><span>${note}</span></div>`;
+  const row = document.createElement("div");
+  row.className = "tl-row";
+  files.forEach(f => row.appendChild(ph(f, date, "assembly")));
+  g.appendChild(row);
+  gridAsm.appendChild(g);
+});
+
+const gridFin = document.getElementById("grid-final");
+DATA.final.forEach(([f, d]) => gridFin.appendChild(ph(f, d, "final")));
+</script>
+</body>
+</html>
