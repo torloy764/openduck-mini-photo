@@ -8,7 +8,7 @@
 
 ## 在线访问
 
-👉 https://torloy764.github.io/openduck-mini/
+👉 https://torloy764.github.io/openduck-mini-photo/
 
 ## 本地预览
 
